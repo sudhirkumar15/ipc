@@ -1,0 +1,82 @@
+//Variables
+@import "../../../../../assets/scss-data/colors";
+@import "../../../../../assets/scss-data/variables";
+.form-section {
+    font-family: HKGrotesk;
+    color: $gray;
+    label {
+        text-transform: capitalize;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .form-check {
+        label {
+            text-transform: capitalize;
+        }
+    }
+    .selected-area {
+        background: darken($gray-lighter, 10%);
+        height: 140px;
+        padding: 20px;
+        max-width: 400px;
+        min-width: 245px;
+        width: 90%;
+        display: inline-block;
+        #institutionAdminPassword {
+            min-width: 210px;
+            width: 100%;
+        }
+    }
+    .form-validation-icon {
+        &.is-valid {
+            &:after {
+                top: 90px;
+            }
+        }
+    }
+    .form-validation-icon {
+        &.is-invalid {
+            &:after {
+                top: 90px;
+            }
+        }
+    }
+    input[type=number] {
+        position: relative;
+        margin-left: 62px;
+        width: calc(90% - 60px);
+        min-width: 191px !important;
+        max-width: 339px;
+        bottom: 2px;
+        &::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            margin: 0;
+        }
+    }
+    .skipStepText {
+        color: $water-blue-color;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .showPasswordField {
+        display: block;
+    }
+    .disablePasswordClass {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+    .emailIdMessage {
+        min-width: 245px;
+        max-width: 400px;
+        margin: 0px -13px 15px 5px;
+        width: 90%;
+    }
+    .show-icon {
+        display: block;
+    }
+    .show-hide {
+        margin-right: 16px;
+    }
+}

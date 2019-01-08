@@ -1,0 +1,17 @@
+<app-form>
+  <app-form-header>
+    <div class="heading" tabindex="0">{{global.language.create_new_product}}</div>
+    <div class="navbar header-section">
+      <ul class="nav nav-tabs">
+        <li [class.active]="this.productData.AddProductActiveTabName.activeTabName == 'manageassets'" class="shift-left" [class.active]=""><span>{{global.language.formStep1}}</span>{{global.language.manage_assets}}</li>
+        <li [class.active]="this.productData.AddProductActiveTabName.activeTabName == 'productdetails'"><span>{{global.language.formStep2}}</span>{{global.language.product_details}}</li>
+        <li [class.active]="this.productData.AddProductActiveTabName.activeTabName == 'settings'"><span>{{global.language.formStep3}}</span>{{global.language.settings}}</li>
+      </ul>
+    </div>
+  </app-form-header>
+  <app-form-body>
+    <app-product-course-manage-assets *ngIf="this.productData.AddProductActiveTabName.activeTabName == 'manageassets'"></app-product-course-manage-assets>
+    <app-product-course-details *ngIf="this.productData.AddProductActiveTabName.activeTabName == 'productdetails'"></app-product-course-details>
+    <app-product-course-settings *ngIf="this.productData.AddProductActiveTabName.activeTabName == 'settings'"></app-product-course-settings>
+  </app-form-body>
+</app-form>

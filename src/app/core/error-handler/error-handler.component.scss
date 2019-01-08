@@ -1,0 +1,18 @@
+.msgBlock{
+    width:400px;
+    height:200px;
+    position: absolute;
+    display: table;
+    z-index: 9;
+    left: calc(50% - 200px);
+    top: calc(50% - 100px);
+    text-align: center;
+    .error-msg{
+        vertical-align: middle;
+        display: table-cell;
+        text-transform: capitalize;
+    } 
+    .close-error-popup{
+        float:right;
+    }
+}

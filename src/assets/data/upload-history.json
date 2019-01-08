@@ -1,0 +1,42 @@
+{
+  "status": 200,
+  "error": {},
+  "data": {
+    "uploads": [
+      {
+        "id": 1,
+        "name": "upload-name",
+        "type": "manual",
+        "totalAssets": 10,
+        "totalProducts": 10,
+        "totalSize": 1024,
+        "errorCode": "ERROR_CODE",
+        "errorDetails": "error details",
+        "status": "STATUS_CODE",
+        "createdTime": "2018-01-23T10:33:49.240Z",
+        "updatedTime": "2018-01-23T10:33:49.240Z"
+      },
+      {
+        "id": 2,
+        "name": "upload-name",
+        "type": "manual",
+        "totalAssets": 10,
+        "totalProducts": 10,
+        "totalSize": 1024,
+        "errorCode": "ERROR_CODE",
+        "errorDetails": "error details",
+        "status": "STATUS_CODE",
+        "createdTime": "2018-01-23T10:33:49.240Z",
+        "updatedTime": "2018-01-23T10:33:49.240Z"
+      }
+    ],
+    "_pagination": {
+      "pageNumber": 1,
+      "pageSize": 100,
+      "totalCount": 350,
+      "totalPages": 4,
+      "isFirst": true,
+      "isLast": false
+    }
+  }
+}

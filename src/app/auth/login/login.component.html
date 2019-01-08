@@ -1,0 +1,34 @@
+<app-header [rightHeaderQuestion]="global.language.dontHaveAnAccount" [rightHeaderActionLabel]="global.language.signUp" [rightHeaderActionUrl]="'/'">
+</app-header>
+<main role="main" class="login">
+  <div class="container">
+    <form [formGroup]="loginForm" novalidate="">
+      <div class="mt-5 d-inline-block"></div>
+      <div class="row">
+        <div class="col-md-5 col-sm-12 offset-md-2 offset-lg-3" id="logInForm">
+          <h2 class="mb-5" tabindex="0" attr.aria-label="{{global.language.login}}">{{global.language.login}}</h2>
+          <div class="form-group" [ngClass]="displayFieldCss('email')">
+            <label for="yourName">{{global.language.username}}</label>
+            <input type="text" class="form-control" required id="yourName" placeholder="{{global.language.username}}" formControlName="email">
+            <app-field-error-display [displayError]="isFieldValid('email')" [errorMsg]="getErrorMessage('email')"></app-field-error-display>
+          </div>
+          <div class="form-group" [ngClass]="displayFieldCss('password')">
+            <label for="choosePasword">{{global.language.password}}</label>
+            <input type="password" class="form-control" id="pasword" placeholder="{{global.language.hidePassword}}" formControlName="password">
+            <app-field-error-display [displayError]="isFieldValid('password')" [errorMsg]="getErrorMessage('password')"></app-field-error-display>
+          </div>
+          <div class="login-footer">
+            <button type="submit" class="btn btn-primary mt-3 float-right" id="logInBtn" (click)="login()">{{global.language.login}}
+              <i *ngIf="showLoader" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+          <div class="clearfix mt-5"></div>
+          <hr class="mt-5" />
+          <div class="forgot-password">
+            <a routerLink="/">{{global.language.forgotPassword}}</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>

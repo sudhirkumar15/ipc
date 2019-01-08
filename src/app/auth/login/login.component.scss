@@ -1,0 +1,33 @@
+//Variables
+@import "../../../assets/scss-data/colors";
+@import "../../../assets/scss-data/variables";
+.home {
+    h2 {
+        font-size: $font-size-h2;
+        font-weight: normal;
+    }
+    .forgot-password {
+        font-size: 0.9rem;
+        color: $gray-light;
+    }
+}
+.fa-spinner {
+    color: #fff;
+}
+.login-footer {
+    text-align: right;
+    min-width: 245px;
+    max-width: 400px;
+    width: 90%;
+    button {
+        margin-left: 10px;
+        margin-right: 0px;
+        width: 108px;
+        height: 36px;
+        border-radius: 2px;
+        border: 0;
+        cursor: pointer;
+        box-shadow: 0.9px 0.5px 2px 0px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
+}

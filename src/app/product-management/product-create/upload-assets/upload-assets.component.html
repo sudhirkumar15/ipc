@@ -1,0 +1,39 @@
+<app-product-modal 
+  [modalClass]="'modal-lg'" 
+  [modalCode]="'modal_asset_list'" 
+  [modalBodyTemplate]="assetList" 
+  [show]="show"
+  [backdropClick]="true" 
+  [title]="'Asset List'" 
+  (close)="closeWindow($event)">
+</app-product-modal>
+<ng-template #assetList>
+  <div class="search-wrapper">
+    <app-product-modal-search [labelText]="global.language.search_assets"></app-product-modal-search>
+    <a class="btn btn-link upload-btn" href="javascript:void(0)" (click)="file.click()">
+        + {{ global.language.upload_new }}
+        <input type="file" #file [multiple]="true" (change)="onFileChange($event)" style="display:none" />
+      </a>
+  </div>
+  <div class="table-wrapper">
+    <app-data-table 
+      [isShowToolbar]="false" 
+      [tableData]="productData.assetList.value.data.assets" 
+      [loadingIndicator]="dataLoader"
+      [showSettings]="false" 
+      [columns]="assetsDataTableColumns" 
+      [pagination]="productData.assetList.value.data._pagination"
+      [isRowDetailsEnable]="true" 
+      (pageAction)="pageAction($event)" 
+      (sortByAction)="onSortByAction($event)"    
+      [defaultSort]="defaultSort"
+      [selected]="selectedRows">
+    </app-data-table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-link" aria-label="Close" (close)="closeWindow($event)">{{global.language.cancel}}</button>
+    <button type="button" class="btn btn-secondary" (click)="add($event)">{{global.language.next}}
+      <i aria-hidden="true" class="fa fa-chevron-right next-arrow"></i>
+    </button>
+  </div>
+</ng-template>

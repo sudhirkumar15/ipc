@@ -1,0 +1,72 @@
+<div class="side-panel" id="sidenav" [class.mini]="openIndex >= 0" [@firstlevel]="viewState">
+  <a class="navbar-brand">{{global.language.sidePanelBanner}}</a>
+  <ul class="side-nav">
+    <ng-container *ngFor="let link of linkList; let i = index;">
+        <li 
+          *appHasAccess="link.access"   
+          appAccessibilityClickHandler 
+          (click)="togglePanel(i,link.url,link.name,$event)"
+          [attr.id]="'item-' + i"
+        >
+          <div class="circle"></div>
+          <a  
+            [routerLink]="link.url" 
+            [id]="link.id" 
+            class="nav-link"
+          >
+              {{link.name}}
+          </a>
+        </li>
+    </ng-container>
+    
+  </ul>
+  <div class="side-panel-footer">
+    <ul class="admin">
+      <li class="super-admin" id="superAdmin">
+        <div class="circle-big active"> </div>
+        <a class="nav-link ">{{ displayName }}
+          <br>{{ displayRole}} </a>
+      </li>
+      <li id="notification">
+        <div class="circle ">
+          <div class="small-circle"></div>
+        </div>
+        <a class="nav-link">{{global.language.notifications}}</a>
+      </li>
+      <li id="settings">
+        <div class="circle"> </div>
+        <a class="nav-link">{{global.language.settings}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="second-level" id="secondLevelView" [class.show]="openIndex >= 0">
+  <a 
+    appAccessibilityClickHandler 
+    class="back-button" 
+    (click)="togglePanel()" 
+    tabindex="0">    
+    <i class="fa fa-angle-left" attr.aria-label="back"></i>
+    {{global.language.back}}
+  </a>
+  <ul class="second-level-info" *ngIf="openIndex >= 0">
+    <li>
+      <a 
+        [routerLink]="parentUrl" 
+        class="second-level-link" 
+        [id]="parentName" >
+          {{parentName | uppercase }}
+      </a>
+    </li>
+    <li *ngFor="let sublink of linkList[openIndex].subMenu" >
+      <a 
+        *appHasAccess="sublink.access" 
+        appAccessibilityRouteHandler  
+        [routerLink]="sublink.url" 
+        class="second-level-link" 
+        [id]="sublink.id">
+        {{sublink.name}}
+      </a>
+    </li>
+  </ul>
+</div>

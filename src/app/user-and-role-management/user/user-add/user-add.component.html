@@ -1,0 +1,98 @@
+<form [formGroup]="addUserForm" (ngSubmit)="onUserAddFormSubmit()" novalidate="">
+  <app-form>
+    <app-form-header>
+      <div class="heading">{{global.language.createNewUser}}</div>
+      <div class="navbar header-section">
+        <ul class="nav nav-tabs">
+          <li id="addNewUser" class="shift-left active">
+            <span>{{global.language.formStep1}}</span>{{global.language.addUser}}</li>
+        </ul>
+      </div>
+    </app-form-header>
+    <app-form-body>
+      <div class="form-section">
+        <div class="row">
+          <div class="col-md-11 offset-md-1 col-lg-3">
+            <span class="form-heading">{{global.language.basicDetails}}</span>
+          </div>
+          <div class="form-group  col-md-7 offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('firstName')">
+            <label for="firstName">{{global.language.userFirstName}}</label>
+            <input type="text" class="form-control" id="firstName" required formControlName="firstName">
+            <app-field-error-display [displayError]="isFieldValid('firstName')" [errorMsg]="getErrorMessage('firstName')"></app-field-error-display>
+          </div>
+          <div class="col-md-4 col-lg-3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-11 offset-md-1 col-lg-3"></div>
+          <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('email')">
+            <label class="email-label" for="userEmail">{{global.language.userEmail}}</label>
+            <input type="email" class="form-control" id="userEmail" required formControlName="email">
+            <app-field-error-display [displayError]="isFieldValid('email')" [errorMsg]="getErrorMessage('email')"></app-field-error-display>
+          </div>
+          <div class="col-md-4 col-lg-3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-11 offset-md-1 col-lg-3"></div>
+          <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('phoneNumber')">
+            <label for="phoneNumber">{{global.language.phoneNumber}}</label>
+            <app-phone-number formControlName="countrycode"></app-phone-number>
+            <input type="number" class="form-control" id="phoneNumber" attr.aria-label="{{global.language.phoneNumber}}" formControlName="phoneNumber"
+              placeholder="{{global.language.placeholder_phoneNumber}}">
+            <app-field-error-display [displayError]="isFieldValid('phoneNumber')" [errorMsg]="getErrorMessage('phoneNumber')"></app-field-error-display>
+          </div>
+          <div class="col-md-4 col-lg-3"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-11 offset-md-1 col-lg-3"></div>
+          <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('password')">
+            <label for="userPassword">{{global.language.password}}</label>
+            <div class="passwordAlignment">
+              <input type="{{type}}" class="form-control" id="userPassword" required formControlName="password" placeholder="{{global.language.hidePassword}}">
+              <i class="show-hide fa" (click)="toggleShow()" [ngClass]="{'fa-eye-slash':show,'fa-eye':!show}"></i>
+              <app-field-error-display [displayError]="isFieldValid('password')" [errorMsg]="getErrorMessage('password')"></app-field-error-display>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3"></div>
+        <div class="row">
+          <div class="col-md-11 offset-md-1 col-lg-3">
+            <span class="form-heading">{{global.language.adminDetails}}</span>
+          </div>
+          <div class="col-md-7 offset-md-1 col-lg-5 offset-lg-0" [autoClose]="false" dropdown appDropDownOutsideClick (onDropdownOutsideClick)="onDropdownOutsideClick($event)"
+            [(isOpen)]="isDropDownOpen">
+            <label for="assignRole">{{global.language.assignRoles}}</label>
+            <div dropdownToggle class="assignRole form-control">
+              {{selectedRolelist.toString()}}
+              <i class="fa fa-angle-down drop-down" aria-hidden="true"></i>
+            </div>
+            <ul *dropdownMenu class="dropdown-menu" role="menu" formArrayName="roles">
+              <li *ngFor="let p of addUserForm.get('roles').controls let i = index" [formGroupName]="i">
+                <div class="checkbox">
+                  <label for="check{{i}}">
+                    <input type="checkbox" id="check{{i}}" formControlName="roleSelected" value=" {{p.get('roleSelected').value}}" (change)="onChange(i, $event.target.checked)"> {{p.get('name').value}}
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-lg-3"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="row">
+          <div class="col-md-11 offset-md-1 col-lg-3"></div>
+          <div class="col-md-7  offset-md-1 col-lg-5 offset-lg-0">
+            <div class="form-section-footer">
+              <button id="cancelUser" (click)="cancelUserCreation()">
+                {{global.language.cancelButton}}
+              </button>
+              <button id="createdUser" type="submit" class="btn-active">
+                {{global.language.done}}
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-3"></div>
+        </div>
+      </div>
+    </app-form-body>
+  </app-form>
+</form>

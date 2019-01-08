@@ -1,0 +1,38 @@
+<div class="select-product-header">
+  <div class="link-type-description">
+    {{ global.language.asset_product_link_label_choose_all_link_type }}
+  </div>
+  <div class="link-type-description">
+    <select (change)="onParentSelectChange($event)">
+      <option [value]="">
+        {{ global.language.asset_product_link_label_choose_selected_products_option }}
+      </option>
+      <option [value]="type.id" *ngFor="let type of assetLinkTypes">{{ type.name }}</option>
+    </select>
+  </div>
+</div>
+<div class="select-product"> {{ global.language.asset_product_link_label_choose_selected_products }} :
+  <form [formGroup]="assetLinkForm" novalidate (ngSubmit)="onSave()">
+    <ul>
+      <li class="asset-list " *ngFor="let link of assetLinkForm.get('productAssetLinks')['controls']; let i = index;" formArrayName="productAssetLinks">
+        <div [formGroupName]="i">
+          <div class="product-detail" id="product-id">{{ selectedProducts[i] ? selectedProducts[i].code : ''}}</div>
+          <div class="product-detail" id="product-name">{{ selectedProducts[i] ? selectedProducts[i].name : ''}}</div>
+          <div class="product-detail" id="product-type" [ngClass]="displayFieldCss('productAssetLinks.'+i+'.linkTypeId')">
+            <select formControlName="linkTypeId">
+              <option value=''>{{ global.language.asset_product_link_label_choose_link_type_option }}</option>
+              <option [ngValue]="type.id" *ngFor="let type of assetLinkTypes">{{ type.name }}</option>
+            </select>
+          </div>
+          <app-field-error-display [displayError]="isFieldValid('productAssetLinks.'+i+'.linkTypeId')" [errorMsg]="getErrorMessage('productAssetLinks.'+i+'.linkTypeId')"></app-field-error-display>
+        </div>
+      </li>
+    </ul>
+    <button id="createdUser" type="button" class="btn-active" (click)="cancel()">
+      {{ global.language.cancel }}
+    </button>
+    <button id="createdUser" type="submit" class="btn-active">
+      {{ global.language.done }}
+    </button>
+  </form>
+</div>

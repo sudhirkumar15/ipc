@@ -1,0 +1,66 @@
+<form [formGroup]="tenantAdminForm" (ngSubmit)="onTenantAdminFormSubmit()" novalidate="">
+  <div class="form-section">
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"> <span class="form-heading">{{global.language.adminProfile}}</span></div>
+      <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('firstName')">
+        <label for="adminName">{{global.language.adminName}}</label>
+        <input type="text" class="form-control" id="adminName" required formControlName="firstName">
+        <app-field-error-display [displayError]="isFieldValid('firstName')" [errorMsg]="getErrorMessage('firstName')"></app-field-error-display>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="form-group col-md-7  offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('phoneNumber')">
+        <label for="adminPhoneNumber">{{global.language.phoneNumber}}</label>
+        <app-phone-number formControlName="countrycode"></app-phone-number>
+        <input type="number" class="form-control typeNumber" id="basicPhno" attr.aria-label="{{global.language.phoneNumber}}" required formControlName="phoneNumber"
+          placeholder="{{global.language.placeholder_phoneNumber}}">
+        <app-field-error-display [displayError]="isFieldValid('phoneNumber')" [errorMsg]="getErrorMessage('phoneNumber')"></app-field-error-display>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"> </div>
+      <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('email')">
+        <label for="adminEmail">{{global.language.email}}</label>
+        <input type="email" class="form-control" id="adminEmail" required formControlName="email">
+        <app-field-error-display [displayError]="isFieldValid('email')" [errorMsg]="getErrorMessage('email')"></app-field-error-display>
+      </div>
+      <div class="col-md-4 col-lg-3"><span class="help-text" tabindex="0">{{global.language.useOrganizationEmail}}</span></div>
+    </div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="form-group  col-md-7 offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('password')">
+        <div class="selected-area">
+          <div class="form-check">
+            <label class="form-check-label checkbox p-0">
+            <input tabindex="0" type="checkbox" disabled="disabled" [checked]=true class="form-check-input">
+            <span class="setPassword" tabindex="0">{{global.language.setAccountPassword}}</span>
+            </label>
+          </div>
+          <label for="adminPassword">{{global.language.enterPassword}}</label>
+          <input type="{{type}}" class="form-control" id="adminPassword" required formControlName="password" placeholder="{{global.language.hidePassword}}">
+          <i tabindex="0" class="show-hide fa" (click)="togglePassword()" [ngClass]="{'fa-eye-slash':showPassword,'fa-eye':!showPassword}"
+            appAccessibilityClickHandler></i>
+        </div>
+        <app-field-error-display [displayError]="isFieldValid('password')" [errorMsg]="getErrorMessage('password')"></app-field-error-display>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+    <div class="separator">
+    </div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="col-md-7  offset-md-1 col-lg-5 offset-lg-0">
+        <div class="form-section-footer">
+          <button (click)="backToTenantDetails()" id="back"><i class="fa fa-chevron-left prev-arrow" aria-hidden="true"></i> {{global.language.back}}</button>
+          <button class="btn-active" id="tenantCreated">{{global.language.done}}
+            <i *ngIf="formSubmitAttempt" class="fa fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+  </div>
+</form>

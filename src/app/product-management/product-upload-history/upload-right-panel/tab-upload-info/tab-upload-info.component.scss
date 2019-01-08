@@ -1,0 +1,29 @@
+@import "../../../../../assets/scss-data/colors";
+@import "../../../../../assets/scss-data/variables";
+.upload-info-wrapper {
+    height: calc(100vh - 120px);
+    padding: 40px 20px;
+    background: $gray-lighter;
+    font-size: 11px;
+    .info-text {
+        color: $gray-light;
+        padding: 15px 0;
+    }
+    .info-value {
+        color: $black-color;
+        padding: 15px 0 15px 15px;
+    }
+    .alert.bordered {
+        background: transparent;
+        border: 1px solid;
+        padding: 0 5px 2px;
+        font-size: 12px;
+        min-width: 50px;
+        text-align: center;
+        margin: 0 0 5px 0;
+        &.alert-success {
+            border-color: $success-color;
+            color: $success-color;
+        }
+    }
+}

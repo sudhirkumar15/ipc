@@ -1,0 +1,112 @@
+@import "../../../assets/scss-data/colors";
+@import "../../../assets/scss-data/variables";
+.modal.upload-modal {
+    background: rgba($gray-lighter, 0.5);
+    .modal-dialog {
+        width: 400px;
+        max-width: 400px;
+        margin: 0;
+        right: 0px;
+        left: auto;
+        top: 0;
+        position: absolute;
+        .modal-content {
+            height: 100vh;
+            border-radius: 0;
+            border:0;
+            box-shadow: 0.4px 0.9px 2px 0px rgba($black-color, 0.5);
+            .modal-header {
+               display: block;
+               border-bottom: 0;
+                h4 {
+                    font-size: 16px;
+                    color:$black-color;
+                }
+            }
+            .min-max-btn,
+            .close-btn {
+                width: 25px;
+                height: 25px;
+                border: 0;
+                background: transparent;
+                float: right;
+                margin: 0 3px;
+                cursor: pointer;
+                .fa {
+                    color: $gray-light;
+                    transform: rotate(25deg)
+                }
+                &:hover{
+                    .fa{
+                        color:$gray;
+                    }
+                }
+            }
+            .close-btn{
+                .fa{
+                    transform: none;
+                }
+            }
+            .modal-body {
+                padding: 0;   
+                .tab-container{
+                    .nav.nav-tabs{
+                        background: #000;
+                        .nav-item {
+                        .nav-link{
+                            border: 0;
+                            &.active{
+                                border:0;
+                            }
+                        }
+                    }
+                    }
+                }
+                .modal-footer{
+                    padding:8px 15px;
+                    background: $gray-lighter;
+                    color:$black-color;
+                    border-top:1px solid rgba($black-color, 0.2);
+                    font-size: 12px;
+                    position: absolute;
+                    bottom: 0;
+                    width:400px;
+                    text-align: left;
+                    display: block;
+                    .files-progress{
+                        float: left;
+                    }
+                    .files-remaining{
+                        float: right;
+                    }
+                }
+            }
+            
+        }
+    }
+    &.mini {
+        width: 400px;
+        max-width: 400px;
+        height: 130px;
+        bottom: 0;
+        top: auto;
+        left: auto;
+        right: 0;
+        .modal-dialog {
+            bottom: 0;
+            top: auto;
+            .modal-content {
+                height: 130px;
+                border-radius: 0;
+                border:1px solid rgba($black-color, 0.1);
+                box-shadow: 0.4px 0.9px 2px 0px rgba($black-color, 0.5);
+                .min-max-btn {
+                    .fa {
+                        transform: rotate(225deg)
+                    }
+                }               
+                
+            }
+        }
+    }
+}

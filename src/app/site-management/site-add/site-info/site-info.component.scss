@@ -1,0 +1,40 @@
+//Variables
+@import "../../../../assets/scss-data/colors";
+@import "../../../../assets/scss-data/variables";
+.form-section {
+    font-family: HKGrotesk;
+    color: $gray;
+    label {
+        text-transform: capitalize;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .addNewUrl{
+        cursor: pointer;
+        color: $water-blue-color;
+    }    
+    .url-field{
+        min-width: 245px;
+        max-width: 400px;
+        width: 90%;
+        display: inline-block;
+        height: 36px;
+        margin: 0 0 11px 0;
+        .variable-url{
+            width: 30%;
+            min-width: 86px;
+            padding: 0 0 0 5px;
+            height: 36px;
+            box-shadow: 0px 1px 2px 0 rgba(0, 0, 0, 0.1);
+            border: solid 1px $border-color;
+            margin: 0 0 11px 0;
+        }
+       
+    }    
+    .show { 
+        display: block !important;
+    }
+    .fa-spinner{
+        color:$white-color;
+    }
+}

@@ -1,0 +1,538 @@
+pipeline {
+    agent any
+
+    environment {
+        JOB_URL         = "https://phoenix-build.impelsys.com/job"
+        BLUE_OCEAN_URL  = 'https://phoenix-build.impelsys.com/blue/organizations/jenkins'
+
+        DEVOPS_EMAILS   = 'phx-devops@impelsys.com'
+        EMAIL_LIST      = 'phx-dev@impelsys.com'
+        QA_MAIL_LIST    = 'phx-qa@impelsys.com'
+        STAGE_MAIL_LIST = 'phx-release@impelsys.com'
+
+        S3_BUCKET         = 'phoenix-admin-solution'
+        S3_BUCKET_DEV     = 'phoenix-admin-solution-dev'
+        S3_BUCKET_QA      = 'phoenix-admin-solution-qa'
+        BUCKET_REGION     = 'us-east-1'
+        BUCKET_REGION_DEV = 'us-east-1'
+        BUCKET_REGION_QA  = 'us-east-1'
+
+        SLACK_DEV_CHANNEL = 'phoenix-foxtrot'
+        SLACK_CHANNEL     = 'phoenix-dev'
+        SLACK_DEVOPS      = 'phoenix-charlie'
+        SLACK_URL         = 'https://impelsys.slack.com/services/hooks/jenkins-ci/'
+        SLACK_TOKEN       = 'tLb7ztLHbgV90v2N5qlub5NL'
+
+        DEV_CF_DIST_ID    = 'E1X8T7OOLVMKS9' 
+        QA_CF_DIST_ID     = 'E18HPZSA15RK2D'
+        STAGE_CF_DIST_ID  = 'E2EJV0KLQN1HAD' 
+
+        TAG = "admin-solution-build-${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Initialize') {
+            steps {
+                notifySlack('STARTED', 'dev')
+                echo "Pulled Code !!"
+
+                echo 'Update node modules...'
+                sh 'npm install'
+            }
+
+            post {
+                failure{
+                    echo "Build Deployment Failed..."
+                    deploymentNotification('FAILURE', 'DEV')
+                    notifySlack('FAIL', 'dev')
+                }
+            }
+        }
+
+        stage('Dev') {
+            steps {
+                echo "Update domain URL for DEV"
+                updateApiUrl('dev')
+
+                echo "Building..."
+                builder()
+
+                echo "Pushing to s3..."
+                pushToS3('dist', 'dev')
+
+                echo "Invalidating Cloud Front distribution..."
+                invalidateCF(env.DEV_CF_DIST_ID, ["/index.html", "/siteconfig.json", "/assets/languages/en.json"])
+            }
+
+            post {
+                success {
+                    echo "Upload Success! Deployed Successfully on Dev"
+
+                    echo "Notify team for dev deployment"
+                    deploymentNotification('SUCCESS', 'DEV')
+
+                    notifySlack('SUCCESS', 'dev')
+
+                    input message: 'Do you want to release this build to QA environment?'
+                }
+
+                failure {
+                    echo "S3 upload Fail! DEV Deployment Failed !!"
+                    deploymentNotification('FAILURE', 'DEV')
+                    notifySlack('FAIL', 'dev')
+                }
+            }
+        }
+
+        stage('QA') {
+            steps {
+                echo "Update domain URL for QA"
+                updateApiUrl('qa')
+
+                echo "Building..."
+                builder()
+
+                echo "Pushing to s3..."
+                pushToS3('dist', 'qa')
+
+                echo "Invalidating Cloud Front distribution..."
+                invalidateCF(env.QA_CF_DIST_ID, ["/index.html", "/siteconfig.json", "/assets/languages/en.json"])
+            }
+
+            post {
+                success {
+                    echo "Upload Success! Deployed Successfully on QA"
+
+                    echo "Notify team for QA deployment"
+                    deploymentNotification('SUCCESS', 'QA')
+
+                    notifySlack('SUCCESS', 'qa')
+                }
+
+                failure {
+                    echo "S3 upload Fail... QA Deploymnent Failed !!"
+                    deploymentNotification('FAILURE', 'QA')
+                    notifySlack('FAIL', 'qa')
+                }
+            }
+        }
+
+        stage('QA Testing') {
+            steps {
+                // Ask for Manual testing Passed or Fail on QA
+                input message: 'Is Manual Testing Passed??'
+            }
+
+            post {
+                success {
+                    echo "Send mail for QA Passed"
+                    qaNotification('SUCCESS')
+                    notifySlack('PASS', 'qa-test')
+
+                    // Ask for Deployment on Stage
+                    input message: 'Do you want to release this build to Stage environment?'
+                    echo "Deploying to Staging env"
+                }
+
+                aborted {
+                    echo "Send mail for QA Fail"
+                    qaNotification('FAILURE')
+                    notifySlack('FAIL', 'qa-test')
+                }
+            }
+        }
+
+        stage('Stage') {
+            steps {
+                echo "Update domain URL for staging"
+                updateApiUrl('stage')
+
+                echo "Building..."
+                builder()
+
+                echo "Pushing to s3..."
+                pushToS3('dist', 'stage')
+
+                echo "Invalidating Cloud Front distribution..."
+                invalidateCF(env.STAGE_CF_DIST_ID, ["/index.html", "/siteconfig.json", "/assets/languages/en.json"])
+
+                echo "Successfully deployed to staging S3"
+
+                echo "Tagging build commit and merging it to master"
+
+                tagAndMergeRelease("${TAG}");
+
+                sshagent(['53d13153-fd76-4340-bb6d-1b8fcc3cc026']) {
+                    sh "git push -u origin master"
+
+                    echo "Pushing the tag ${TAG} to remote"
+                    sh "git push origin ${TAG}"
+                }
+            }
+
+            post {
+                success {
+                    echo "Upload Success! Deployed Successfully on Stage"
+                    echo "Notify team for Stage deployment"
+
+                    deploymentNotification('SUCCESS', 'STAGE')
+                    notifySlack('SUCCESS', 'stage')
+                }
+
+                failure {
+                    echo "S3 upload Fail... Stage Deploymnent Failed !!"
+                    deploymentNotification('FAILURE', 'STAGE')
+                    notifySlack('FAIL', 'stage')
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployed successfully!!!!"
+            notifyTeam('SUCCESS')
+            notifySlack('SUCCESS', 'devops')
+        }
+
+        failure {
+            echo "Pipeline FAILED, not deployed!!!!"
+            notifyTeam('FAILURE')
+            notifySlack('FAIL', 'devops')
+        }
+
+        aborted {
+            echo "Pipeline ABORTED, not deployed!!!!"
+            notifyTeam('ABORTED')
+            notifySlack('ABORT', 'devops')
+        }
+    }
+}
+
+/**
+ * Send notification for environment deployment
+ */
+def deploymentNotification(status, env_type) {
+
+    def value = ''
+    def title = ''
+    def note = "<li>Please wait 2-3 minutes for changes to reflect on ${env_type} server.</li>"
+    def body = ''
+
+    // Setting up variables based on parameters passed
+    if (status == 'SUCCESS') {
+        value = '<font color="green"><b>SUCCEEDED</b></font>'
+        title = 'Successful'
+    } else {
+        value = '<font color="red"><b>FAILED</b></font>'
+        title = 'Failed'
+    }
+
+    // Modify Content based on environment
+    if (env_type == 'QA' && status == 'SUCCESS') {
+        body = "<p><i>You can ask QA to start Testing on QA server.</i></p>"
+    }  else if (env_type == 'DEV') {
+        body = """
+            <p><b>Below is the report :</b>
+            <ul><li><a href='${env.BLUE_OCEAN_URL}/${env.JOB_NAME}/detail/${env.JOB_NAME}/${env.BUILD_NUMBER}/pipeline'>Release Report</a></li>
+            </ul></p>"""
+    }
+
+    def subject = "${env_type} Deployment ${title}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
+
+    body = """
+        Hi, <br><p>
+        Job <b>'${env.JOB_NAME} [${env.BUILD_NUMBER}]'</b> has ${value} during deployment on ${env_type} Environment.</p>
+
+        <p>
+        <b>Change log :</b>
+        <p>${getChangeString()}</p><br/><br/>
+
+        ${body}
+
+        <b><i>Note: Please wait 2-3 minutes for changes to reflect on ${env_type} server.</i></b>
+        <br/><br/>
+        Thanks,<br/>
+
+        DevOps Team
+    """
+
+    def to = env.EMAIL_LIST
+
+    if (env_type == 'QA') {
+        to = "${to},${env.QA_MAIL_LIST}"
+    } else if (env_type == 'STAGE') {
+        to = "${to},${env.QA_MAIL_LIST},${env.STAGE_MAIL_LIST}"
+    }
+
+    def recipients = [
+        [$class: 'CulpritsRecipientProvider'],
+        [$class: 'FailingTestSuspectsRecipientProvider']
+    ]
+
+    sendEmail(subject, body, to)
+}
+
+/**
+ * Send notification for QA status
+ */
+def qaNotification(status) {
+    def value = ''
+    def body = ''
+
+    if (status == 'SUCCESS') {
+        value = '<font color="green"><b>APPROVED</b></font>'
+        body = "<p>Please go to the <a href='${env.BLUE_OCEAN_URL}/${env.JOB_NAME}/detail/${env.JOB_NAME}/${env.BUILD_NUMBER}/pipeline'>link</a> and can approve for the stage deploymnet.</p>"
+    } else {
+        value = '<font color="red"><b>FAILED</b></font>'
+    }
+
+    def subject = "QA Testing for ${env.JOB_NAME} [${env.BUILD_NUMBER}] : ${status}"
+
+    body = """
+        Hi, <br><p>
+        QA has ${value} <b>'${env.JOB_NAME} [${env.BUILD_NUMBER}]'</b>.</p><br/>
+
+        ${body}<br/>
+
+        Thanks,<br/>
+
+        DevOps Team
+    """
+
+    def to = "${env.EMAIL_LIST},${env.QA_MAIL_LIST}"
+    
+    sendEmail(subject, body, to)
+}
+
+/**
+ * Build the code for deplying
+*/
+def builder () {
+
+    // Build the code
+    echo "Building ....."
+    sh "ng build --prod --base-href=./"
+}
+
+import groovy.io.FileType
+
+/**
+ * Push code to S3
+*/
+def pushToS3(directory, env_type) {
+    echo "Move code to S3....."
+        
+    def filename;
+    def filepath;
+    def bucket = "${env.S3_BUCKET}"
+    def region = "${env.BUCKET_REGION}"
+
+    if (env_type == 'dev') {
+        bucket = "${env.S3_BUCKET_DEV}"
+        region = "${env.BUCKET_REGION_DEV}"
+    } else if (env_type == 'qa') {
+        bucket = "${env.S3_BUCKET_QA}"
+        region = "${env.BUCKET_REGION_QA}"
+    }
+
+    withAWS(region: "${region}") {
+        s3Upload(path: "solution/", workingDir: "dist", includePathPattern: "**/*", bucket: "${bucket}", acl: 'PublicRead')
+    }
+}
+
+/**
+ * Get change log
+*/
+def getChangeString () {
+    MAX_MSG_LEN = 100
+    def changeString = ""
+
+    echo "Gathering SCM changes"
+    def changeLogSets = currentBuild.changeSets
+
+    if (changeLogSets.size() > 0) {
+        changeString = "<ul>"
+    }
+
+    for (int i = 0; i < changeLogSets.size(); i++) {
+        def entries = changeLogSets[i].items
+
+        for (int j = 0; j < entries.length; j++) {
+            def entry = entries[j]
+
+            changeString += """<li><ul>Commit ${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}:<p>
+                ${entry.msg}"""
+
+			def files = new ArrayList(entry.affectedFiles)
+
+            for (int k = 0; k < files.size(); k++) {
+                def file = files[k]
+                changeString += "<li><b>${file.editType.name}</b> ${file.path}</li>"
+            }
+
+            changeString += "</ul></li>"
+        }
+    }
+
+    if (!changeString) {
+        changeString = " - No new changes"
+    }
+
+    echo "${changeString}"
+    return changeString + "</ul>"
+}
+
+/**
+ * Notification for Devops Team for complete execution
+ */
+def notifyTeam(status) {
+   emailext(
+      subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] - ${status}",
+      body: """
+            Hi Team,
+
+            <p>Deployment <b>${status}</b> for the Pipeline ${env.JOB_NAME}.</p>
+            <p>Click on the <a href="${env.JOB_URL}/${env.JOB_NAME}/${env.BUILD_NUMBER}/console">link</a> to find more details.</p>
+
+            <br/><br/>
+            Thanks,<br/>
+            DevOps Team
+      """,
+      to: env.DEVOPS_EMAILS
+   )
+}
+
+/**
+ * Slack Notification for Team
+*/
+def notifySlack(String build_status = 'STARTED', String envn = '') {
+    // Build status of null means success.
+    build_status = build_status ?: 'SUCCESS'
+    def color
+    def post_msg
+    def report_url = "${env.BLUE_OCEAN_URL}/${env.JOB_NAME}/detail/${env.JOB_NAME}/${env.BUILD_NUMBER}/pipeline"
+
+    if (envn == '') {
+        channel = "${SLACK_CHANNEL}"
+    } else if (envn == 'dev') {
+        channel = "${SLACK_DEV_CHANNEL}"
+    } else if (envn == 'devops') {
+        channel = "${SLACK_DEVOPS}"
+    }
+
+    if (build_status == 'STARTED') {
+        color = '#D4DADF'
+    } else if (build_status == 'SUCCESS' || build_status == 'PASS') {
+        color = '#1F8F06'
+    } else if (build_status == 'UNSTABLE') {
+        color = '#FFFE89'
+    } else if (build_status == 'FAIL') {
+        color = '#FF0000'
+    } else if (build_status == 'ABORT') {
+        color = '#F3F022'
+        post_msg = "Pipeline Aborted. \n ${report_url}"
+    } else {
+        color = '#FF9FA1'
+    }
+
+    if (envn == 'dev' || envn == 'stage') {
+        post_msg = "Deployment *${build_status}* on ${envn} environment. \n ${report_url}"
+    } else if (envn == 'qa') {
+        post_msg = "Deployment *${build_status}* on QA environment. \n ${report_url}"
+    } else if (envn == 'qa-test') {
+        post_msg = "QA Test has *${build_status}* on QA environment. \n ${report_url}"
+    }
+
+    def msg = "${env.JOB_NAME} - #${env.BUILD_NUMBER}: *${build_status}* \n ${post_msg}"
+    slackSend(color: color, message: msg, channel: "${channel}", failOnError: true, baseUrl: "${SLACK_URL}", token: "${SLACK_TOKEN}", tokenCredentialId: 'SlackToken')
+}
+
+
+/**
+ * Wrapper around emailext function
+ */
+
+def sendEmail(subject, body, to) {
+    def recipients = [
+        [$class: 'CulpritsRecipientProvider'],
+        [$class: 'FailingTestSuspectsRecipientProvider']
+    ]
+
+    emailext(
+        subject: subject,
+        body: body,
+        to: to,
+        recipientProviders: recipients
+    )
+}
+
+
+import groovy.json.JsonOutput;
+import groovy.json.JsonSlurper;
+import groovy.json.JsonBuilder;
+
+/**
+ * Update API URL based on the environment
+*/
+@NonCPS
+def updateApiUrl(env_type) {
+
+    echo "Updating Config details into the file."
+    def url = "${DEV_API_URL}"
+    String inputFile = "${env.WORKSPACE}/src/siteconfig.json"
+    String fileContents = new File(inputFile).getText('UTF-8')
+    def slurped = new JsonSlurper().parseText(fileContents)
+    def builder = new JsonBuilder(slurped)
+
+    if (env_type == 'qa') {
+        url = "${QA_API_URL}"
+    } else if (env_type == 'stage') {
+        url = "${STAGE_API_URL}"
+    }
+
+    // Update the url based on the environment
+    slurped.data.domain = url
+
+    String outputFile = "${env.WORKSPACE}/src/siteconfig.json"
+    def fileWriter = new FileWriter(outputFile)
+    builder.writeTo(fileWriter)
+    fileWriter.flush()
+
+    echo "Config details are updated into the file."
+}
+
+
+/*
+ * Tags the build commit once the deployment to stage environment is success.
+ * Tag is of the form 'account-service-build-${build-number}'
+ * Merges the commit to master and updates the remote repo.
+ */
+
+def tagAndMergeRelease(tagName) {
+    echo "tagging with: ${tagName}"
+    sh "git tag ${tagName}"
+
+    try {
+        sh 'git checkout master'
+    } catch(Exception exc) {
+        sh 'git checkout -b master origin/master'
+    }
+
+    sh 'git pull origin master'
+
+    echo "merging ${tagName} onto master"
+    sh "git merge ${tagName}"
+
+    echo "Merged ${tagName} on master"
+}
+
+
+/*
+ * Invalidates the paths specified in the cloudfront distribution 
+ */
+
+def invalidateCF(distrib_id, paths) {
+    echo "Invalidating Cloud Front distribution...: ${distrib_id}"
+    sh "aws cloudfront create-invalidation --distribution-id ${distrib_id} --paths ${paths.join(' ')}"
+}

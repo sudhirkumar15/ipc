@@ -1,0 +1,22 @@
+//Variables
+@import "../../../assets/scss-data/colors";
+@import "../../../assets/scss-data/variables";
+.navbar {
+    background: $dark-blue-color;
+    color: $white-color;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5);
+    height: 70px;
+    .navbar-brand {
+        color: $white-color;
+        font-size: $font-size-h2;
+    }
+    .nav-link {
+        color: $white-color;
+        font-weight: bold;
+        text-transform: uppercase;
+        &:hover {
+            color: $link-hover-color;
+        }
+       
+    }
+}

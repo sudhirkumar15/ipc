@@ -1,0 +1,17 @@
+<app-form>
+    <app-form-header>
+        <div class="heading">{{global.language.institutionHeading}}</div>
+        <div class="navbar header-section">
+            <ul class="nav nav-tabs">
+                <li class="shift-left" [class.active]="this.institutionData.AddNewInstitutiontData.activeTabName == 'institutioninfo'"><span>{{global.language.formStep1}}</span>{{global.language.institutionInfo}}</li>
+                <li [class.active]="this.institutionData.AddNewInstitutiontData.activeTabName == 'institutionadmin'"><span>{{global.language.formStep2}}</span>{{global.language.institutionAdmin}}</li>
+                <li [class.active]="this.institutionData.AddNewInstitutiontData.activeTabName == 'institutionsettings'"><span>{{global.language.formStep3}}</span>{{global.language.institutionSettings}}</li>
+            </ul>
+        </div>
+    </app-form-header>
+    <app-form-body>
+        <app-institution-add-info *ngIf="this.institutionData.AddNewInstitutiontData.activeTabName == 'institutioninfo'"></app-institution-add-info>
+        <app-institution-add-admin *ngIf="this.institutionData.AddNewInstitutiontData.activeTabName == 'institutionadmin'"></app-institution-add-admin>
+        <app-institution-add-settings *ngIf="this.institutionData.AddNewInstitutiontData.activeTabName == 'institutionsettings'"></app-institution-add-settings>
+    </app-form-body>
+</app-form>

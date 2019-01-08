@@ -1,0 +1,63 @@
+<section class="tenant">
+    <div class="content-wrapper" appScroll (onScroll)="handleScroll($event)">
+        <app-table-header [heading]="global.language.upload_label_upload_history" [buttonLabel]="global.language.upload_label_new_upload" (onButtonClick)="showUpload()"
+            (filterBy)="searchAction($event)">
+        </app-table-header>
+        <div class="table-wrapper">
+            <app-data-table 
+                #uploadHistoryDataTable 
+                [isSticky]="scroll" 
+                [tableData]="productData.uploadList.value.data.uploads" 
+                [loadingIndicator]="uploadHistoryApi.dataLoader"
+                [columns]="uploadHistoryDataTableColumns" 
+                [pagination]="productData.uploadList.value.data._pagination"
+                (pageAction)="pageAction($event)"
+                (sortByAction)="onSortByAction($event)"
+                [isRowDetailsEnable]="true"
+                [defaultSort]="defaultSort"
+                >
+            </app-data-table>
+        </div>
+    </div>
+</section>
+
+<ng-template #uploadHistoryTimeStampTemplate let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+    <span>
+        {{ row.createdTime | date:'dd.MM.yy | hh:mm a':'utc' | lowercase}}
+    </span>
+</ng-template>
+<ng-template #uploadHistoryBatchIdTemplate let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+    <span>
+        <a class="upload-info-link" (click)="uploadInfoData(row)">{{ row.name}}</a>
+    </span>
+</ng-template>
+
+<ng-template #uploadHistoryFileSize let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+    <span>{{ row.totalSize | fileSize : 0}}</span>
+</ng-template>
+<ng-template #uploadHistoryActionsTemplate let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+    <span dropdown class="dropdown action-dropdown" container="body" placement="bottom right">
+        <a href dropdownToggle (click)="false">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </a>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
+            <li *ngFor="let choice of actionItems">
+                <a class="dropdown-item" href (click)="false">{{choice}}</a>
+            </li>
+        </ul>
+    </span>
+</ng-template>
+<ng-template #productTableStatusTemplate let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+    <span [ngClass]="getStatusCssClass(row.status)">
+        {{ row.status}}
+    </span>
+</ng-template>
+<ng-template #uploadHistoryAssetsTemplate let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+    <a  class="total-assets-link" (click)="assetDetailsData(row)">
+        {{row.totalAssets}}
+    </a>   
+</ng-template>
+
+<app-upload-right-panel [selectedBatchName] = "selectedBatchName"></app-upload-right-panel>

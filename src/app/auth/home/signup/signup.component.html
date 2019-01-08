@@ -1,0 +1,50 @@
+<form [formGroup]="signUpForm" novalidate>
+    <div id="SignUpForm">
+        <h2 class="mb-3" tabindex="0" attr.aria-label="{{global.language.signUp}}">
+            {{global.language.signUp}}
+        </h2>
+        <div class="form-group" [ngClass]="displayFieldCss('name')">
+            <label for="signUpName">{{global.language.signUpName}}</label>
+            <input type="text" class="form-control" id="yourName" attr.aria-label="{{global.language.signUpName}}" placeholder="{{global.language.signUpName}}"
+                formControlName="name">
+            <app-field-error-display [displayError]="isFieldValid('name')" [errorMsg]="getErrorMessage('name')"></app-field-error-display>
+        </div>
+        <div class="form-group phone-num" [ngClass]="displayFieldCss('phonenumber')">
+            <label for="phoneNumber">{{global.language.phoneNumber}}</label>
+            <app-phone-number formControlName="countrycode"></app-phone-number>
+            <input type="number" class="form-control" id="phoneNumber" attr.aria-label="{{global.language.phoneNumber}}" required placeholder="{{global.language.placeholder_phoneNumber}}"
+                formControlName="phonenumber">
+            <app-field-error-display [displayError]="isFieldValid('phonenumber')" [errorMsg]="getErrorMessage('phonenumber')"></app-field-error-display>
+        </div>
+        <div class="form-group" [ngClass]="displayFieldCss('contactEmail')">
+            <label for="workEmail">{{global.language.workEmail}}</label>
+            <input type="email" class="form-control" id="workEmail" attr.aria-label="{{global.language.workEmail}}" required formControlName="contactEmail"
+                placeholder="{{global.language.workEmailEx}}">
+            <app-field-error-display [displayError]="isFieldValid('contactEmail')" [errorMsg]="getErrorMessage('contactEmail')"></app-field-error-display>
+        </div>
+        <div class="form-group" [ngClass]="displayFieldCss('password')">
+            <label for="choosePasword">{{global.language.choosePassword}}</label>
+            <input type="{{type}}" class="form-control" id="choosePasword" attr.aria-label="{{global.language.choosePassword}}" required
+                formControlName="password" placeholder="{{global.language.hidePassword}}">
+            <i class="show-hide fa" (click)="toggleShow()" [ngClass]="{'fa-eye-slash':show,'fa-eye':!show}"></i>
+            <app-field-error-display [displayError]="isFieldValid('password')" [errorMsg]="getErrorMessage('password')"></app-field-error-display>
+        </div>
+        <div class="form-group" [ngClass]="{'success':captcha=='true','danger':captcha=='false'}">
+            <re-captcha (resolved)="resolved($event)" class="g-recaptcha" siteKey="{{siteKey}}"></re-captcha>
+        </div>
+        <div class="clearfix"></div>
+        <div class="login-footer">
+            <button type="submit" class="btn btn-primary float-right" id="signUpBtn" role="button" attr.aria-label="{{global.language.getStarted}}"
+                (click)="register()">
+                {{global.language.getStarted}}
+                <i *ngIf="showLoader" class="fa fa-spinner fa-spin"></i>
+            </button>
+        </div>
+        <div class="clearfix"></div>
+        <hr class="mt-3">
+        <div class="agree-text" tabindex="0" attr.aria-label="{{global.language.getStartedMsg}}">
+            {{global.language.getStartedMsg}}
+            <a routerLink="/">{{global.language.termsAndCondtions}}</a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,39 @@
+.msgBlock{
+    width: 505px;
+    height: 36px;
+    opacity: 0.8;
+    position: absolute;
+    z-index: 9;
+    border-radius: 4px;
+    background-color: #00746b;
+    left: calc(50% - 132px);
+    margin: 5px;
+    .fa-info-circle{
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        opacity: 0.7;
+        background-color: #ffffff;
+        padding: 1px;
+        margin: 10px;
+    }
+    .success-msg{
+        width: 220px;
+        height: 14px;
+        font-family: HKGrotesk;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: left;
+        color: #ffffff;
+    }
+    .fa-times{
+        color: #eff3f6;
+    }
+    .close-success-popup{
+        width: 10px;
+        height: 10px;
+        opacity: 0.4;
+        float:right;
+        margin: 10px;
+    }
+}

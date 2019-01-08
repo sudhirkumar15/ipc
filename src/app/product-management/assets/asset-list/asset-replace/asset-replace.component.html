@@ -1,0 +1,18 @@
+<app-product-modal 
+    [modalClass]="'modal-lg'" 
+    [modalCode]="'modal_asset_replace'" 
+    [show]="show" 
+    [modalBodyTemplate]="assetReplace"
+    [title]="'Asset Replace'" 
+    (close)="closeWindow($event)"
+>
+</app-product-modal>
+<ng-template #assetReplace>
+    <div *ngIf="!startUpload">
+        <p>Are you sure you wish to proceed ?</p>
+        <button class="btn-primary" disabled="disabled">Cancel</button>
+        <button class="btn-primary"(click)="replace()">Replace</button>
+        <button class="btn-primary" >Replace & Publish</button>
+    </div>
+    <app-product-upload *ngIf="startUpload"></app-product-upload>
+</ng-template>

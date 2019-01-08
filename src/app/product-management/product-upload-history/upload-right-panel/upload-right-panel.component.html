@@ -1,0 +1,14 @@
+<app-table-details-window 
+  [heading]="global.language.uploadDetails" 
+  [batchId]="global.language.upload_label_batch_id+' : '+ selectedBatchName">
+  <app-window-tabSet>
+    <tabset #staticTabs>
+      <tab heading="{{global.language.upload_label_asset_product}}" id="assetsProducts">
+        <app-tab-asset-info></app-tab-asset-info>
+      </tab>
+      <tab heading="{{global.language.upload_label_upload_info}}" id="uploadInfo">
+        <app-tab-upload-info [selectedRow] = "info.selectedRow"></app-tab-upload-info>
+      </tab>
+    </tabset>
+  </app-window-tabSet>
+</app-table-details-window>

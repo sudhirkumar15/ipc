@@ -1,0 +1,215 @@
+@import "../../assets/scss-data/colors";
+@import "../../assets/scss-data/variables";
+.toolbar-wrapper {
+    margin: 40px 0 20px;
+    padding: 0;
+    &.sticky{
+        position:sticky;
+        top: 0;           
+        margin: 0;
+        transition:all 2ms ;
+        z-index: 1000;
+        background:  $gray-lighter;
+        padding:15px 0;
+    }
+    .vertical-divider {
+        width: 1px;
+        height: 30px;
+        background-color: $gray-lighter;
+        border: solid 1px $border-color;
+        display: inline-block;
+        margin: 0 10px 0 15px;
+        vertical-align: middle;
+    }
+    .btn-link{
+        color: $text-color;
+        font-size: 12px;
+        &:hover {
+            color: $link-hover-color;
+            text-decoration: none;
+        }
+    }
+    .icon-link {
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        vertical-align: middle;
+        padding: 0px 5px 0;
+        color: $text-color;
+        .fa {
+            font-size: 1.5rem;
+            vertical-align: middle;
+        }
+        &:hover {
+            color: $link-hover-color;
+            text-decoration: none;
+        }
+    }
+    .filter-dropdown {
+        display: inline-block;
+        button {
+            width: 131px;
+            text-align: left;
+            border-radius: 3px;
+            &.dropdown-toggle::after {
+                right: 13px;
+                position: absolute;
+                top: 42%;
+                border-top: .4em solid;
+            }
+        }
+        .dropdown-menu {
+            min-width: 120px;
+            margin: 0 0 0 5px;
+            ul {
+                margin: 0;
+                padding: 0;
+                li {
+                    list-style: none;
+                    padding: 5px 10px 5px;
+                    font-size: 12px;
+                    &:hover {
+                        background: $gray-lighter;
+                    }
+                    &.title {
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        font-size: 0.8rem;
+                        &:hover {
+                            background: transparent;
+                        }
+                        ul {
+                            li {
+                                margin: 0 -10px;
+                            }
+                        }
+                    }
+                    .datatable-checkbox {
+                        padding: 0;
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+    }
+    .data-table-settings {
+        display: inline-block;
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+            min-width: 170px;
+            margin: 0;
+            ul {
+                padding: 0;
+                margin: 0;
+                li {
+                    list-style: none;
+                    padding: 5px 10px 5px;
+                    font-size: 12px;
+                    &:hover {
+                        background: $gray-lighter;
+                    }
+                    &.title {
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        font-size: 0.8rem;
+                        &:hover {
+                            background: transparent;
+                        }
+                        ul {
+                            li {
+                                margin: 0 -10px;
+                                &.hidden{
+                                    cursor:not-allowed;                                    
+                                    .datatable-checkbox{
+                                        color:darken($gray-lighter, 5%);
+                                        cursor:not-allowed;  
+                                        input[type='checkbox'] {
+                                            cursor:not-allowed;  
+                                            &:checked:after {
+                                                background: $gray-lighter;
+                                                border-color: $gray-lighter;
+                                            }
+                                        }
+                                        
+                                    }
+                                    &:hover{
+                                        background: $white-color;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .datatable-checkbox {
+                        padding: 0;
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.pagination {
+    display: inline-block;
+    vertical-align: middle;
+    .page-numbers {
+        display: inline-block;
+        margin: 0 10px 0 0;
+        vertical-align: middle;
+        font-weight: bold;
+        .toltal-row {
+            vertical-align: middle;
+            display: inline-block;
+        }
+        .data-table-page-number {
+            display: inline-block;
+            .icon-link {
+                padding-top: 0;
+                font-weight: bold;
+            }
+            .dropdown-menu {
+                min-width: 80px;
+                margin: 0;
+                ul {
+                    padding: 0;
+                    margin: 0;
+                    li {
+                        list-style: none;
+                        padding: 4px 10px;
+                        cursor: pointer;
+                        &:hover {
+                            background: $gray-lighter;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    a {
+        color: $black-color;
+        text-decoration: none;
+        transition: background-color .3s;
+        width: 30px;
+        height: 30px;
+        background: $white-color;
+        text-align: center;
+        line-height: 26px;
+        box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.05);
+        border: solid 1px $gray-lighter;
+        cursor: pointer;
+        display: inline-block;
+        &:first-child {
+            margin-right: 10px;
+        }
+        .fa {
+            align-items: center;
+            vertical-align: middle;
+            font-size: 0.8rem;
+        }
+        &.disabled {
+            cursor: not-allowed;
+            color: $gray-lighter;
+        }
+    }
+}

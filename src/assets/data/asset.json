@@ -1,0 +1,32 @@
+{
+    "status": 200,
+    "error": {},
+    "data": {
+        "asset": {
+            "id": 1,
+            "name": "Cover art",
+            "hash": "7bd8be87ae27e0608c5a1c932fdb4085",
+            "description": "desc",
+            "previewPath": "https://ih1.redbubble.net/avatar.1249496.100x100.jpg",
+            "currentVersion": 1,
+            "currentRevisionId": 1,
+            "processStatus": "PROCESS_COMPLETE",
+            "contentType": "document",
+            "deliveryChannels": [
+                "online",
+                "offline"
+            ],
+            "fileSize": 99,
+            "mimeType": "application/pdf",
+            "isActive": "true",
+            "isPublished": "true",
+            "isDeleted": "false",
+            "meta": {
+                "Caption": "Data Science",
+                "Labels/Tags": "AAA,BBN,CC"
+            },
+            "createdTime": "2018-03-07T07:16:24.304Z",
+            "updatedTime": "2018-03-07T07:16:24.304Z"
+        }
+    }
+}

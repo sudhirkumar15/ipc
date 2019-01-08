@@ -1,0 +1,18 @@
+<app-header [rightHeaderQuestion]="global.language.alreadyRegister" [rightHeaderActionLabel]="global.language.login" [rightHeaderActionUrl]="'/login'">
+</app-header>
+
+<main role="main" class="home">
+  <div class="container">
+    <div class="mt-5 d-inline-block"></div>
+    <div class="row">
+      <div class="col-md-6 col-sm-12 d-sm-none d-md-block">
+        <div class="img-thumbnail w-25 h-25 mb-3"></div>
+        <h2 attr.aria-label="{{global.language.welcomeMsgTitle}}" tabindex="0">{{global.language.welcomeMsgTitle}}</h2>
+        <p tabindex="0">{{global.language.welcomeMessage}}</p>
+      </div>
+      <div class="col-md-5 col-sm-12 offset-md-0 offset-lg-1" id="SignUpForm">
+        <app-signup></app-signup>
+      </div>
+    </div>
+  </div>
+</main>

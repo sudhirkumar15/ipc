@@ -1,0 +1,7 @@
+<div role="alert" id="success" tabindex="0" class="msgBlock" *ngIf= global.apiSuccess>
+    <div role="document" tabindex="0">
+        <i class="fa fa-info-circle"></i>
+        <span tabindex="0"  class="success-msg">{{global.apiSuccess}}</span>
+        <i tabindex="0" class="fa fa-times close-success-popup" (click)="closePopup()" appAccessibilityClickHandler></i>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<app-form>
+  <app-form-header>
+    <div class="heading" tabindex="0">{{global.language.create_new_product}}</div>
+    <div class="navbar header-section">
+      <ul class="nav nav-tabs">
+        <li [class.active]="this.productData.AddProductActiveTabName.activeTabName == 'curriculumcreator'" class="shift-left" ><span>{{global.language.formStep1}}</span>{{global.language.curriculum_creator}}</li>
+        <li [class.active]="this.productData.AddProductActiveTabName.activeTabName == 'curriculumsettings'"><span>{{global.language.formStep2}}</span>{{global.language.settings}}</li>
+      </ul>
+    </div>
+  </app-form-header>
+  <app-form-body>
+    <app-curriculum-creator *ngIf="this.productData.AddProductActiveTabName.activeTabName == 'curriculumcreator'"></app-curriculum-creator>
+    <app-curriculum-settings *ngIf="this.productData.AddProductActiveTabName.activeTabName == 'curriculumsettings'"></app-curriculum-settings>
+  </app-form-body>
+</app-form>
