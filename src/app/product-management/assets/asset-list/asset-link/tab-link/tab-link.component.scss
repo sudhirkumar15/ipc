@@ -1,0 +1,32 @@
+@import "../../../../../../assets/scss-data/colors";
+@import "../../../../../../assets/scss-data/variables";
+.link-type-description{
+    width: 49%;
+    padding-top: 10px;
+    display: inline-block;
+    select{
+       background: transparent;
+        width: 100%;
+   }
+}
+.select-product{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    ul{
+       padding-left: 0px;
+        margin-top: 10px;
+        .asset-list{
+            list-style-type: none;
+            padding: 10px;
+            border: 1px solid $gray-lighter;
+            .product-detail{
+                width: calc(33.33% - 3px);
+                display: inline-block;
+                select{
+                   background: transparent;
+                    width: 100%;
+               }
+           }
+       }
+   }
+}

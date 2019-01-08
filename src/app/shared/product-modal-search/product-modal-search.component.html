@@ -1,0 +1,14 @@
+<div class="modal-search-wrapper">
+  <div class="form-group row no-gutters">
+    <label for="searchToLInk" class="col-md-4 col-form-label">
+      {{labelText}}      
+    </label>
+    <div class="col-md-7">
+      <input id="searchToLInk" #search type='text' class="form-control search" placeholder="{{global.language.search}}" (keyup)="onKeyupInputFld(search.value)"
+      />
+      <button class="filter" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+</div>

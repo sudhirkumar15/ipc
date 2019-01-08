@@ -1,0 +1,39 @@
+<app-product-modal-search 
+    (searchBy)="searchBy($event)">
+</app-product-modal-search>
+<div class="table-wrapper">
+    <app-data-table 
+        [isShowToolbar]="false" 
+        [tableData]="products" 
+        [loadingIndicator]="dataLoader" 
+        [showSettings]="false" 
+        [columns]="assetsDataTableColumns"
+        [pagination]="pagination" 
+        (pageAction)="pageAction($event)" 
+        (sortByAction)="onSortByAction($event)" 
+        [isRowDetailsEnable]="true"
+        [selected]="selectedRows" 
+        (onSelected)="onSelected()">
+    </app-data-table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-link" (click)="cancel()">{{ global.language.cancel }}</button>
+    <button type="button" class="btn btn-secondary" [disabled]="selectedRows.length <= 0" (click)="onNext()">
+        {{ global.language.next }}
+        <i aria-hidden="true" class="fa fa-chevron-right next-arrow"></i>
+    </button>
+</div>
+
+<ng-template #productFormatHeaderTemplate let-column="column" ngx-datatable-header-template>
+    <div dropdown class="dropdown action-dropdown d-inline" container="body">
+        <a dropdownToggle (click)="false">
+            {{column.name}}
+            <span class="caret"></span>
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+            <li *ngFor="let type of productTypes">
+                <a class="dropdown-item" [ngClass]="{'active': getClass(column.propRel,type.id)}" (click)="onTableFilter(column.propRel,type.id)">{{type.name}}</a>
+            </li>
+        </ul>
+    </div>
+</ng-template>

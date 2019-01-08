@@ -1,0 +1,87 @@
+//Variables
+@import "../../../assets/scss-data/colors";
+@import "../../../assets/scss-data/variables";
+.datatable-body-cell.institute {
+    cursor: pointer;
+}
+
+@import "../../../assets/scss-data/colors";
+@import "../../../assets/scss-data/variables";
+.create-product-window {
+    background: rgba($gray-lighter, 0.5);
+    z-index: 1200;
+    .modal-dialog {
+        width: 500px;
+        margin: 0;
+        left: calc(50% - 250px);
+        top: calc(50% - 200px);
+        position: absolute;
+        .modal-content {
+            height: 400px;
+            border-radius: 0;
+            border: 0;
+            box-shadow: 0.4px 0.9px 2px 0px rgba($black-color, 0.5);
+            .modal-header {
+                display: block;
+                border-bottom: 0;
+                margin-bottom: 15px;
+                h4 {
+                    width: 430px;
+                    display: inline-block;
+                    color: $black-color;
+                    span {
+                        color: $gray;
+                        display: block;
+                        line-height: 14px; // clear: both;
+                        width: 230px;
+                    }
+                    .select-product {
+                        font-size: 12px;
+                        width: 230px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+            }
+            .close-btn {
+                width: 25px;
+                height: 25px;
+                border: 0;
+                background: transparent;
+                float: right;
+                margin: 0 3px;
+                cursor: pointer;
+                .fa {
+                    color: $gray-light;
+                }
+                &:hover {
+                    .fa {
+                        color: $gray;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 0px 15px 0px 15px;
+                .product-card {
+                    width: 49%;
+                    display: inline-block;
+                    padding: 5px;
+                    .card-image {
+                        height: 60px;
+                        border: 1px solid;
+                        width: 50px;
+                        border-radius: 5px;
+                        display: inline-block;
+                    }
+                    .card-desc{
+                            display: inline-block;
+                            vertical-align: top;
+                            padding-left: 5px;
+                            margin-top: 8%;
+                    }
+                }
+            }
+        }
+    }
+}

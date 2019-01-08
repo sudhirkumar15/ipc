@@ -1,0 +1,66 @@
+@import "../../../assets/scss-data/colors";
+@import "../../../assets/scss-data/variables";
+.modal.details-window {
+    background: rgba($gray-lighter, 0.5);
+    z-index: 1200;
+    .modal-dialog {
+        width: 300px;
+        max-width: 300px;
+        margin: 0;
+        right: 0px;
+        left: auto;
+        top: 0;
+        position: absolute;
+        .modal-content {
+            height: 100vh;
+            border-radius: 0;
+            border:0;
+            box-shadow: 0.4px 0.9px 2px 0px rgba($black-color, 0.5);
+            .modal-header {
+               display: block;
+               border-bottom: 0;
+               margin-bottom: 15px;
+                h4 {
+                    font-size: 16px;
+                    color:$black-color;
+                    span{
+                        font-size: 14px;
+                        color: $gray;
+                        display: block;
+                        line-height: 14px;
+                        clear: both;
+                    }
+                    .batch-id{
+                        width: 230px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+            }            
+            .close-btn {
+                width: 25px;
+                height: 25px;
+                border: 0;
+                background: transparent;
+                float: right;
+                margin: 0 3px;
+                cursor: pointer;
+                .fa {
+                    color: $gray-light;
+                }
+                &:hover{
+                    .fa{
+                        color:$gray;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 0;     
+            }
+            
+        }
+    }
+    
+}
+

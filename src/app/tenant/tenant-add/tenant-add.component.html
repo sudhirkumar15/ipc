@@ -1,0 +1,23 @@
+<app-form>
+  <app-form-header>
+    <div class="heading" tabindex="0">{{global.language.createNewTenant}}</div>
+    <div class="navbar header-section">
+      <ul class="nav nav-tabs">
+        <li 
+          [attr.tabindex]="this.tenantData.activeTabName == 'tenantdetails' ? 0 : -1" 
+          class="shift-left" 
+          [class.active]="this.tenantData.activeTabName == 'tenantdetails'">
+            <span>{{global.language.formStep1}}</span>{{global.language.tenantDetails}}
+        </li>
+        <li 
+          [attr.tabindex]="this.tenantData.activeTabName == 'tenantadmin' ? 0 : -1" 
+          [class.active]="this.tenantData.activeTabName == 'tenantadmin'">
+            <span>{{global.language.formStep2}}</span>{{global.language.tenantAdmin}}</li>
+      </ul>
+    </div>
+  </app-form-header>
+  <app-form-body>
+    <app-tenant-add-details *ngIf="this.tenantData.activeTabName == 'tenantdetails'"></app-tenant-add-details>
+    <app-tenant-add-admin *ngIf="this.tenantData.activeTabName == 'tenantadmin'"></app-tenant-add-admin>
+  </app-form-body>
+</app-form>

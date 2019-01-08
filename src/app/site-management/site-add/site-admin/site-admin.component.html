@@ -1,0 +1,57 @@
+<form [formGroup]="siteAdminForm" (ngSubmit)="onSiteAdminFormSubmit()" novalidate="">
+  <div class="form-section">
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="form-group col-md-7 offset-md-1 col-lg-5 offset-lg-0" [ngClass]="displayFieldCss('email')">
+        <label for="siteAdminEmail">{{global.language.email}}</label>
+        <input type="email" class="form-control" id="siteAdminEmail" required formControlName="email">
+        <app-field-error-display [displayError]="isFieldValid('email')" [errorMsg]="getErrorMessage('email')"></app-field-error-display>
+        <div class="emailIdMessage">
+          <span>{{global.language.siteEmailIdMessage}}</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="form-group  col-md-7 offset-md-1 col-lg-5 offset-lg-0 form-validation-icon" [ngClass]="displayFieldCss('password')">
+        <div class="selected-area">
+          <div class="form-check">
+            <label class="form-check-label checkbox p-0">
+            <input type="checkbox" [checked]=true class="form-check-input" (change)="togglePasswordField()">{{global.language.setAccountPassword}}
+          </label>
+          </div>
+          <label for="siteAdminForm.get('password')">{{global.language.enterPassword}}</label>
+          <input type="{{type}}" class="form-control" id="siteAdminPassword" [ngClass]="isChecked ? 'showPasswordField': 'disablePasswordClass'"
+            required formControlName="password" placeholder="{{global.language.hidePassword}}">
+          <i class="show-hide fa" (click)="showPassword()" [ngClass]="{'fa-eye-slash':show,'fa-eye':!show}"></i>
+        </div>
+        <app-field-error-display [displayError]="isFieldValid('password')" [errorMsg]="getErrorMessage('password')"></app-field-error-display>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0">
+        <div>
+          <span class="skipStepText" (click)="goToSiteSettings()">{{global.language.skipStep}}</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3"></div>
+    </div>
+    <div class="separator"></div>
+    <div class="row">
+      <div class="col-md-11 offset-md-1 col-lg-3"></div>
+      <div class="form-group  col-md-7  offset-md-1 col-lg-5 offset-lg-0">
+        <div class="form-section-footer">
+          <button id="backToSiteInfo" (click)="backToSiteInfo()">
+          {{global.language.back}}
+        </button>
+          <button id="goToSiteSettings" (click)="goToSiteSettings()" [class.btn-active]=true>
+          {{global.language.next}} <i class="fa fa-chevron-right next-arrow" aria-hidden="true"></i>
+        </button>          
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

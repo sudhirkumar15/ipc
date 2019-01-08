@@ -1,0 +1,66 @@
+
+{
+  "status": 200,
+  "error": {},
+  "data": {
+     "products":[
+        {
+          "id": 525,
+          "name": "dgxdfbxb",
+          "code": "PC1",
+          "timestamp": "2018-03-29T07:32:50.927Z",
+          "format": "ebook",
+          "size": "20Mb",
+          "status": "hy",
+          "isPublished":true
+        },
+        {
+          "id": 525,
+          "name": "dgxdfbxb",
+          "code": "PC2",
+          "timestamp": "2018-03-29T07:32:50.927Z",
+          "format": "course",
+          "size": "15Mb",
+          "status": "ydtyf",
+          "isPublished":false
+        },
+        {
+          "id": 526,
+          "name": "dgxdfbxb",
+          "code": "PC3",
+          "timestamp": "2018-03-29T07:32:50.927Z",
+          "format": "ebook",
+          "size": "10Mb",
+          "status": "ydtyf",
+          "isPublished":true
+        },
+        {
+          "id": 527,
+          "name": "dgxdb",
+          "code": "PC4",
+          "timestamp": "2018-03-29T07:32:50.927Z",
+          "format": "course",
+          "size": "20Mb",
+          "status": "ydtyf",
+          "isPublished":true
+        },
+        {
+          "id": 528,
+          "name": "dgxdfbxbvfdd",
+          "code": "PC5",
+          "timestamp": "2018-03-29T07:32:50.927Z",
+          "format": "podcast",
+          "size": "5Mb",
+          "status": "ydtyf",
+          "isPublished":false
+        }
+      ],"_pagination": {
+        "totalCount": 2,
+        "totalPages": 1,
+        "isFirst": true,
+        "isLast": true,
+        "pageNumber": 1,
+        "pageSize": 10
+      }
+  }
+  }

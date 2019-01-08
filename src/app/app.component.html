@@ -1,0 +1,10 @@
+<ng-template [ngIf]="initLoad" [ngIfElse]="loading">
+  <app-error-handler></app-error-handler>
+  <app-success-handler></app-success-handler>
+  <app-side-panel *ngIf="isSidePanelEnable()"></app-side-panel>
+  <router-outlet></router-outlet>
+  <app-upload-window></app-upload-window>
+</ng-template>
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>
