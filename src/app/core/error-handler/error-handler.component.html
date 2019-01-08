@@ -1,4 +1,0 @@
-<div role="alert" attr.aria-label="{{global.apiError}}" tabindex="0" class="alert alert-danger msgBlock" *ngIf=global.apiError>
-    <span class="error-msg" *ngFor="let err of global.apiError"> {{ err }}</span>
-    <i tabindex="0" class="fa fa-times close-error-popup" (click)="closePopup()" appAccessibilityClickHandler></i>
-</div>
